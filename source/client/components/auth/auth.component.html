@@ -1,0 +1,42 @@
+<div class="menuButton" *ngIf="!currentUser">
+	<div class="item" (click)="onSignin()">Sign In</div>
+</div>
+	
+<div class="dialogContainer" id="signinDialog" (keyup)="onSigninKeyUp( $event, signinForm.form.valid)" style="display: none;">
+	<app-loader-overlay [loading]="loading"></app-loader-overlay>
+	<div class="headerContainer">
+		<div class="title">Sign In</div>
+	</div>
+	<form name="signinForm" #signinForm="ngForm">
+		<div class="formContainer">
+			<div class="formItemContainer" *ngIf="formControl.errorMessage">
+				<div class="errorContainer">{{ formControl.errorMessage }}</div>
+			</div>
+			<div class="formItemContainer">
+				<div class="labelContainer mandatory">Email</div>
+				<div class="controlContainer" [ngClass]="{ 'inputError' : (formControl.authenticating && username.invalid) || (formControl.resetting && username.invalid) }">
+					<input type="text" name="username" [(ngModel)]="signinModel.username" #username="ngModel" autocomplete="off" maxlength="64" required/>
+				</div>
+			</div>
+			<div class="formItemContainer">
+				<div class="controlContainer inline">
+				<label>
+					<input type="checkbox" name="rememberMe" [(ngModel)]="formControl.rememberMe" #rememberMe="ngModel" />
+					<span>Remember me</span>
+				</label>
+				</div>
+			</div>
+  			<div class="formItemContainer">
+				<div class="labelContainer mandatory">Password</div>
+				<div class="hintContainer">Forgotten your password? Request a <span (click)="onStartUserReset( username.valid);" class="link">Password Reset</span></div>
+				<div class="controlContainer" [ngClass]="{ 'inputError' : formControl.authenticating && password.invalid }">
+					<input type="password" name="password" [(ngModel)]="signinModel.password" #password="ngModel" autocomplete="off" maxlength="64" required/>
+				</div>
+			</div>
+			<div class="buttonContainer">
+				<div class="largeButton cancel" (click)="onSigninCancel()">Cancel</div>
+				<div class="largeButton go" (click)="onSigninSubmit( signinForm.form.valid)">Sign In</div>
+			</div>
+		</div>
+	</form>
+</div>
